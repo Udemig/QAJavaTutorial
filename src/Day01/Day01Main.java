@@ -1,6 +1,8 @@
-import Day01.*;
+package Day01;
 
-public class Main {
+import Day02.MethodExample;
+
+public class Day01Main {
     public static void main(String[] args) {
 
         /*VariableExample varExample = new VariableExample();
@@ -23,14 +25,15 @@ public class Main {
        // math.runSwicth();
 
         ScannerExample scannerExample = new ScannerExample();
-        scannerExample.getInput();
 
-         */
 
         LoopExample loopExample = new LoopExample();
         loopExample.runWhileLoop();
         loopExample.runDoWhileLoop();
         loopExample.runForLoop();
         loopExample.runForEachLoop();
+
+         */
+
     }
 }
