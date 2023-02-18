@@ -1,5 +1,9 @@
 package Day02;
 
+import day03.CarExample;
+import day03.JavaModifiersExample;
+import day03.VehicleExample;
+
 import java.util.Scanner;
 
 public class Day02Main {
@@ -28,5 +32,9 @@ public class Day02Main {
         int yas = scanner.nextInt();
         String oyDurumu = methodExample1.oyHakki(yas);
         System.out.println(oyDurumu);
+
+        JavaModifiersExample javaModifiersExample = new JavaModifiersExample();
+        javaModifiersExample.getFeeOfOverTime();
+
     }
 }
