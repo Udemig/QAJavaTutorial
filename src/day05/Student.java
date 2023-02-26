@@ -3,9 +3,9 @@ package day05;
 import java.util.ArrayList;
 
 public class Student {
-    String nameSurname;
-    int no;
-    ArrayList<Lecture> lectures;
+    private String nameSurname;
+    private  int no;
+    private ArrayList<Lecture> lectures;
 
     public Student(String nameSurname, int no, ArrayList<Lecture> lectures) {
         this.nameSurname = nameSurname;

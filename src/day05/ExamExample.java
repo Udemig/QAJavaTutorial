@@ -2,32 +2,34 @@ package day05;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class ExamExample {
 
-     final int AVARAGE_POINT = 50;
-     final int PART_SIZE = 6;
-    int studentPhysicAvarage = 0;
-    int studentMathAvarage = 0;
-    int studentTurkishAvarage = 0;
-
-    ArrayList<Student> students;
+    private static final int PART_SIZE = 6;
+    private int studentPhysicAvarage = 0;
+    private int mathMaxPoint = 0;
+    private int physicMaxPoint = 0;
+    private int turkishMaxPoint = 0;
+    private int studentMathAvarage = 0;
+    private int studentTurkishAvarage = 0;
+    private List<Student> students;
 
     void defineLecturesAndStudents(){
-        // Dersler
+        // Dersler 170 * 0.4   + 240* 0.6    68  - 144  212  / 4  = 53
         Lecture lecture1 = new Lecture("fizik",40,70);
         Lecture lecture2 = new Lecture("turkce",50,80);
-        Lecture lecture3 = new Lecture("fizik",46,90);
+        Lecture lecture3 = new Lecture("fizik",50,90);
         Lecture lecture4 = new Lecture("turkce",80,100 );
-        Lecture lecture5 = new Lecture("fizik",41,10);
+        Lecture lecture5 = new Lecture("fizik",60,10);
         Lecture lecture6 = new Lecture("turkce",42,20 );
         Lecture lecture7 = new Lecture("matematik",44,30);
         Lecture lecture8 = new Lecture("matematik",47,40 );
         Lecture lecture9 = new Lecture("matematik",70,50 );
         Lecture lecture10 = new Lecture("matematik",50,60 );
         Lecture lecture11 = new Lecture("fizik",20,70 );
-        Lecture lecture12 = new Lecture("turkce",10,800);
+        Lecture lecture12 = new Lecture("turkce",10,80);
 
         //Ogrencilerin dersler
         ArrayList<Lecture> ahmetLectures = new ArrayList<>(Arrays.asList(lecture1, lecture2, lecture7));
@@ -37,9 +39,9 @@ public class ExamExample {
 
         //Ogrenciler
         Student ahmet = new Student("ahmet",2,ahmetLectures);
-        Student mehmet = new Student("mehmet",12,mehmetLectures);
+        Student mehmet = new Student("mehmet",1,mehmetLectures);
         Student ayse = new Student("ayse",3,ayseLectures);
-        Student ali = new Student("ahmet",4,aliLectures);
+        Student ali = new Student("ali",4,aliLectures);
 
         //tum ogrencileri listeye ekledim
         students = new ArrayList<>(Arrays.asList(ahmet,mehmet,ayse,ali));
@@ -47,9 +49,28 @@ public class ExamExample {
 
     void calcExamAvarageByStudent(){
         for (int i = 0; i < students.size(); i++) {
-            for (int j = 0; j < students.get(i).lectures.size(); j++) {
-                double examAvg = (students.get(i).lectures.get(j).getFirstExamResult() * 0.4) + (students.get(i).lectures.get(j).getSecondExamResult() * 0.6) ;
-                students.get(i).lectures.get(j).setExamAvg((int)examAvg);
+            for (int j = 0; j < students.get(i).getLectures().size(); j++) {
+                double examAvg = (students.get(i).getLectures().get(j).getFirstExamResult() * 0.4) + (students.get(i).getLectures().get(j).getSecondExamResult() * 0.6) ;
+                students.get(i).getLectures().get(j).setExamAvg((int)examAvg);
+                if (students.get(i).getLectures().get(j).getLessonName() == LectureEnum.matematik.name()){
+                    int firstExam = students.get(i).getLectures().get(j).getFirstExamResult();
+                    int secondExam = students.get(i).getLectures().get(j).getSecondExamResult();
+                    if (mathMaxPoint < firstExam|| mathMaxPoint < secondExam){
+                        mathMaxPoint = firstExam > secondExam ? firstExam : secondExam;
+                    }
+                } else if (students.get(i).getLectures().get(j).getLessonName() == LectureEnum.fizik.name()){
+                    int firstExam = students.get(i).getLectures().get(j).getFirstExamResult();
+                    int secondExam = students.get(i).getLectures().get(j).getSecondExamResult();
+                    if (physicMaxPoint < firstExam|| physicMaxPoint < secondExam){
+                        physicMaxPoint = firstExam > secondExam ? firstExam : secondExam;
+                    }
+                }else {
+                    int firstExam = students.get(i).getLectures().get(j).getFirstExamResult();
+                    int secondExam = students.get(i).getLectures().get(j).getSecondExamResult();
+                    if (turkishMaxPoint < firstExam|| turkishMaxPoint < secondExam){
+                        turkishMaxPoint = firstExam > secondExam ? firstExam : secondExam;
+                    }
+                }
             }
         }
     }
@@ -61,55 +82,70 @@ public class ExamExample {
         int studentTurkishAvarageCounter = 0;
 
         for (int i = 0; i < students.size(); i++) {
-            for (int j = 0; j < students.get(i).lectures.size(); j++) {
-                if ( students.get(i).lectures.get(j).getLessonName() == LectureEnum.turkce.name()){
+            for (int j = 0; j < students.get(i).getLectures().size(); j++) {
+                if ( students.get(i).getLectures().get(j).getLessonName() == LectureEnum.turkce.name()){
                     studentTurkishAvarageCounter++;
-                    studentTurkishAvarage = studentTurkishAvarage +  students.get(i).lectures.get(j).getExamAvg();
-                } else if(students.get(i).lectures.get(j).getLessonName() == LectureEnum.fizik.name()) {
+                    studentTurkishAvarage = studentTurkishAvarage +  students.get(i).getLectures().get(j).getExamAvg();
+                } else if(students.get(i).getLectures().get(j).getLessonName() == LectureEnum.fizik.name()) {
                     studentPhysicAvarageCounter++;
-                    studentPhysicAvarage = studentPhysicAvarage +  students.get(i).lectures.get(j).getExamAvg();
+                    studentPhysicAvarage = studentPhysicAvarage +  students.get(i).getLectures().get(j).getExamAvg();
                 } else {
                     studentMathAvarageCounter++;
-                    studentMathAvarage = studentMathAvarage +  students.get(i).lectures.get(j).getExamAvg();
+                    studentMathAvarage = studentMathAvarage +  students.get(i).getLectures().get(j).getExamAvg();
                 }
             }
-            studentPhysicAvarage  = studentPhysicAvarage / studentPhysicAvarageCounter;
-            studentMathAvarage  = studentMathAvarage / studentMathAvarageCounter;
-            studentTurkishAvarage  = studentTurkishAvarage / studentTurkishAvarageCounter;
         }
+
+        studentPhysicAvarage  = studentPhysicAvarage / studentPhysicAvarageCounter;
+        studentMathAvarage  = studentMathAvarage / studentMathAvarageCounter;
+        studentTurkishAvarage  = studentTurkishAvarage / studentTurkishAvarageCounter;
+
     }
 
     void approveStudentToPassClass(){
+        // 53 - 90 -> 37 / 6 = 6
         for (Student item: students) {
-             if (item.getNameSurname() == "ahmet"){
                  for (Lecture subItem: item.getLectures()){
                      if (subItem.getLessonName() == LectureEnum.fizik.name()){
-                         int spaceBetweenNumbers = studentPhysicAvarage / 6;
-                         System.out.println("spaceBetweenNumbers: " + spaceBetweenNumbers);
-                         System.out.println("studentPhysicAvarage: " + studentPhysicAvarage);
-                         System.out.println("subItem.getExamAvg(): " + subItem.getExamAvg());
-
-                         if (subItem.getExamAvg()<50 || subItem.getExamAvg() < studentPhysicAvarage){
-                             System.out.println("Derste kaldiniz");
-                         } else {
-                             if (subItem.getExamAvg()> studentMathAvarage && subItem.getExamAvg() < (studentMathAvarage +spaceBetweenNumbers)){
-                                 System.out.println("DD ile gectin");
-                             }else if (subItem.getExamAvg() + spaceBetweenNumbers > studentMathAvarage && subItem.getExamAvg() < (studentMathAvarage +spaceBetweenNumbers*2)){
-                                 System.out.println("DC ile gectin");
-                             } else if (subItem.getExamAvg() + (spaceBetweenNumbers * 2)> studentMathAvarage && subItem.getExamAvg() < (studentMathAvarage +spaceBetweenNumbers*3)){
-                                 System.out.println("CC ile gectin");
-                             }else if (subItem.getExamAvg()+ (spaceBetweenNumbers * 3)> studentMathAvarage && subItem.getExamAvg() < (studentMathAvarage +spaceBetweenNumbers*4)){
-                                 System.out.println("BC ile gectin");
-                             }else if (subItem.getExamAvg() + (spaceBetweenNumbers * 4)> studentMathAvarage && subItem.getExamAvg() < (studentMathAvarage +spaceBetweenNumbers*5)){
-                                 System.out.println("BB ile gectin");
-                             }else if (subItem.getExamAvg()+ (spaceBetweenNumbers * 5)> studentMathAvarage && subItem.getExamAvg() < (studentMathAvarage +spaceBetweenNumbers*6)){
-                                 System.out.println("BA ile gectin");
-                             }else {
-                                 System.out.println("AA ile gectin");
-                             }
-                         }
+                         int spaceBetweenNumbers = (physicMaxPoint - studentPhysicAvarage) / PART_SIZE;
+                         printResults(studentPhysicAvarage, subItem, spaceBetweenNumbers,item);
+                     } else  if (subItem.getLessonName() == LectureEnum.turkce.name()){
+                         int spaceBetweenNumbers = (turkishMaxPoint - studentTurkishAvarage) / PART_SIZE;
+                         printResults(studentTurkishAvarage, subItem, spaceBetweenNumbers,item);
+                     }else {
+                         int spaceBetweenNumbers = (mathMaxPoint - studentMathAvarage) / PART_SIZE;
+                         printResults(studentMathAvarage, subItem, spaceBetweenNumbers,item);
                      }
                 }
+        }
+    }
+
+    void printResults(int examAvarage, Lecture lecture, int spaceBetweenNumbers, Student student){
+        if (lecture.getExamAvg()<50 || lecture.getExamAvg() < examAvarage){
+            System.out.println("adin: " + student.getNameSurname() + " ders adi: "+ lecture.getLessonName() + " senin ortalaman: "  +
+                    lecture.getExamAvg() + " genel ortalama: " + examAvarage +" Derste kaldiniz");
+        } else {
+            if (lecture.getExamAvg()> examAvarage && lecture.getExamAvg() < (examAvarage +spaceBetweenNumbers)){
+                System.out.println("adin: " + student.getNameSurname() + " ders adi: "+ lecture.getLessonName() + " senin ortalaman: "  +
+                        lecture.getExamAvg() + " genel ortalama: " + examAvarage +" DD ile gectin");
+            }else if (lecture.getExamAvg() + spaceBetweenNumbers > examAvarage && lecture.getExamAvg() < (examAvarage +spaceBetweenNumbers*2)){
+                System.out.println("adin: " + student.getNameSurname() + " ders adi: "+ lecture.getLessonName() + " senin ortalaman: "  +
+                        lecture.getExamAvg() + " genel ortalama: " + examAvarage +" DC ile gectin");
+            } else if (lecture.getExamAvg() + (spaceBetweenNumbers * 2)> examAvarage && lecture.getExamAvg() < (examAvarage +spaceBetweenNumbers*3)){
+                System.out.println("adin: " + student.getNameSurname() + " ders adi: "+ lecture.getLessonName() + " senin ortalaman: "  +
+                        lecture.getExamAvg() + " genel ortalama: " + examAvarage +" CC ile gectin");
+            }else if (lecture.getExamAvg()+ (spaceBetweenNumbers * 3)> examAvarage && lecture.getExamAvg() < (examAvarage +spaceBetweenNumbers*4)){
+                System.out.println("adin: " + student.getNameSurname() + " ders adi: "+ lecture.getLessonName() + " senin ortalaman: "  +
+                        lecture.getExamAvg() + " genel ortalama: " + examAvarage +" BC ile gectin");
+            }else if (lecture.getExamAvg() + (spaceBetweenNumbers * 4)> examAvarage && lecture.getExamAvg() < (examAvarage +spaceBetweenNumbers*5)){
+                System.out.println("adin: " + student.getNameSurname() + " ders adi: "+ lecture.getLessonName() + " senin ortalaman: "  +
+                        lecture.getExamAvg() + " genel ortalama: " + examAvarage +" BB ile gectin");
+            }else if (lecture.getExamAvg()+ (spaceBetweenNumbers * 5)> examAvarage && lecture.getExamAvg() < (examAvarage +spaceBetweenNumbers*6)){
+                System.out.println("adin: " + student.getNameSurname() + " ders adi: "+ lecture.getLessonName() + " senin ortalaman: "  +
+                        lecture.getExamAvg() + " genel ortalama: " + examAvarage +" BA ile gectin");
+            }else {
+                System.out.println("adin: " + student.getNameSurname() + " ders adi: "+ lecture.getLessonName() + " senin ortalaman: "  +
+                        lecture.getExamAvg() + " genel ortalama: " + examAvarage +" AA ile gectin");
             }
         }
     }

@@ -1,11 +1,11 @@
 package day05;
 
 public class Lecture {
-    String lessonName;
-    int firstExamResult;
-    int secondExamResult;
+    private String lessonName;
+    private int firstExamResult;
+    private int secondExamResult;
+    private int examAvg;
 
-    int examAvg;
     public Lecture(String lessonName, int firstExamResult, int secondExamResult) {
         this.lessonName = lessonName;
         this.firstExamResult = firstExamResult;
